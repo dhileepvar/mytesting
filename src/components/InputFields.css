@@ -1,0 +1,16 @@
+.input-container {
+    display: flex;
+    align-items: center;
+    padding-bottom: 30px;
+    padding-top: 30px;
+  }
+  
+  .input-container input {
+    margin-right: 20px;
+    width: 400px;
+  }
+  
+  .input-container button {
+    margin-left: 25px;
+  }
+  
