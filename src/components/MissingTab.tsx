@@ -223,7 +223,7 @@ const MissingTab: React.FC<MissingTabProps> = ({ data }) => {
                   <tbody>
                     {filteredValues.map((item, index) => (
                       <tr key={index}>
-                        <td style={{ border: '1px solid black', padding: '8px' }}>{item.value}</td>
+                        <td style={{ border: '1px solid black', padding: '8px' }}>{item.value}-{item.rev}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -243,7 +243,7 @@ const MissingTab: React.FC<MissingTabProps> = ({ data }) => {
                   <tbody>
                     {filteredValues7Neigs.map((item, index) => (
                       <tr key={index}>
-                        <td style={{ border: '1px solid black', padding: '8px' }}>{item.value}</td>
+                        <td style={{ border: '1px solid black', padding: '8px' }}>{item.value}-{item.rev}</td>
                       </tr>
                     ))}
                   </tbody>

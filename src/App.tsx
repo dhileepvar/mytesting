@@ -18,7 +18,7 @@ const App = () => {
   const handleAdd = (value: string) => {
     if (value) {
       const valuesArray = value.split(',').map((val) => val.trim());
-      const isReverse = (data[0].rev == 'Yes')? 'No': 'Yes';
+      const isReverse = (data[0].rev == 'Yes')? 'F': 'R';
       const newData = valuesArray.map((val) => ({
         value: val,
         isVoz: checkVoz(val,secVoz),
@@ -49,7 +49,7 @@ const App = () => {
           col: checkCol(val, reNos, blNos),
           type: checkType(val),
           sec: checkSec(val),
-          rev: isReverse ? 'Yes' : 'No'
+          rev: isReverse ? 'R' : 'F'
         };
         isReverse = !isReverse;  
         return newItem;
