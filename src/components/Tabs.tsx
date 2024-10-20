@@ -3,7 +3,7 @@ import TabOne from './DetailsTab';
 import TabTwo from './HistoryTab';
 
 interface TabsProps {
-  data: { value: string; isVoz: string; isOrp: string; isTi: string; isEnd: string; col: string; type: string; sec: string }[];
+  data: { value: string; isVoz: string; isOrp: string; isTi: string; isEnd: string; col: string; type: string; sec: string; rev: string }[];
 }
 
 const Tabs: React.FC<TabsProps> = ({ data }) => {

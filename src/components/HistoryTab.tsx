@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface TabTwoProps {
-  data: { value: string; isVoz: string; isOrp: string; isTi: string; isEnd: string; col: string; type: string; sec: string }[];
+  data: { value: string; isVoz: string; isOrp: string; isTi: string; isEnd: string; col: string; type: string; sec: string; rev: string  }[];
 }
 
 const TabTwo: React.FC<TabTwoProps> = ({ data }) => {
@@ -19,6 +19,7 @@ const TabTwo: React.FC<TabTwoProps> = ({ data }) => {
           <th style={{ border: '1px solid black', padding: '8px' }}>Col</th>
           <th style={{ border: '1px solid black', padding: '8px' }}>O/E</th>
           <th style={{ border: '1px solid black', padding: '8px' }}>Section</th>
+          <th style={{ border: '1px solid black', padding: '8px' }}>Is Reverse</th>
         </tr>
       </thead>
       <tbody>
@@ -33,6 +34,7 @@ const TabTwo: React.FC<TabTwoProps> = ({ data }) => {
             <td style={{ border: '1px solid black', padding: '8px' }}>{item.col}</td>
             <td style={{ border: '1px solid black', padding: '8px' }}>{item.type}</td>
             <td style={{ border: '1px solid black', padding: '8px' }}>{item.sec}</td>
+            <td style={{ border: '1px solid black', padding: '8px' }}>{item.rev}</td>
           </tr>
         ))}
       </tbody>

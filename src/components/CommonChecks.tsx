@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 
-interface MissingTabProps {
-  data: { value: string; isVoz: string; isOrp: string; isTi: string; isEnd: string; col: string; type: string; sec: string; rev: string }[];
+interface CommonChecksProps {
+  data: { value: string; isVoz: string; isOrp: string; isTi: string; isEnd: string; col: string; type: string; sec: string }[];
 }
 
-const MissingTab: React.FC<MissingTabProps> = ({ data }) => {
-  const [lastLimit, setlastLimit] = useState('');
-  const [filteredValues, setfilteredValues] = useState<{ value: string; isVoz: string; isOrp: string; isTi: string; isEnd: string; col: string; type: string; sec: string; rev: string }[]>([]);
-  const [filteredValues7Neigs, setfilteredValues7Neigs] = useState<{ value: string; isVoz: string; isOrp: string; isTi: string; isEnd: string; col: string; type: string; sec: string; rev: string }[]>([]);
+const CommonChecks: React.FC<CommonChecksProps> = ({ data }) => {
   const neigArray = [
     { numlimit: '3', num: '0', neigsStr: ',32,0,26,' },
     { numlimit: '5', num: '0', neigsStr: ',15,32,0,26,3,' },
@@ -38,7 +35,7 @@ const MissingTab: React.FC<MissingTabProps> = ({ data }) => {
     { numlimit: '7', num: '8', neigsStr: ',5,10,23,8,30,11,36,' },
     { numlimit: '3', num: '9', neigsStr: ',22,9,31,' },
     { numlimit: '5', num: '9', neigsStr: ',18,22,9,31,14,' },
-    { numlimit: '7', num: '9', neigsStr: ',29,18,22,9,31,14,20,' },
+    { numlimit: '7', num: '9', neigsStr: ',29,18,22,9,31,14,31,' },
     { numlimit: '3', num: '10', neigsStr: ',5,10,23,' },
     { numlimit: '5', num: '10', neigsStr: ',24,5,10,23,8,' },
     { numlimit: '7', num: '10', neigsStr: ',16,24,5,10,23,8,30,' },
@@ -83,7 +80,7 @@ const MissingTab: React.FC<MissingTabProps> = ({ data }) => {
     { numlimit: '7', num: '23', neigsStr: ',24,5,10,23,8,30,11,' },
     { numlimit: '3', num: '24', neigsStr: ',16,24,5,' },
     { numlimit: '5', num: '24', neigsStr: ',33,16,24,5,10,' },
-    { numlimit: '7', num: '24', neigsStr: ',1,33,16,24,5,10,23,' },
+    { numlimit: '7', num: '24', neigsStr: ',1,33,16,24,5,10,5,' },
     { numlimit: '3', num: '25', neigsStr: ',17,25,2,' },
     { numlimit: '5', num: '25', neigsStr: ',34,17,25,2,21,' },
     { numlimit: '7', num: '25', neigsStr: ',6,34,17,25,2,21,4,' },
@@ -95,7 +92,7 @@ const MissingTab: React.FC<MissingTabProps> = ({ data }) => {
     { numlimit: '7', num: '27', neigsStr: ',11,36,13,27,6,34,17,' },
     { numlimit: '3', num: '28', neigsStr: ',12,28,7,' },
     { numlimit: '5', num: '28', neigsStr: ',35,12,28,7,29,' },
-    { numlimit: '7', num: '28', neigsStr: ',3,35,12,28,7,29,18,' },
+    { numlimit: '7', num: '29', neigsStr: ',3,35,12,28,7,29,18,' },
     { numlimit: '3', num: '30', neigsStr: ',8,30,11,' },
     { numlimit: '5', num: '30', neigsStr: ',23,8,30,11,36,' },
     { numlimit: '7', num: '30', neigsStr: ',10,23,8,30,11,36,13,' },
@@ -119,98 +116,10 @@ const MissingTab: React.FC<MissingTabProps> = ({ data }) => {
     { numlimit: '7', num: '36', neigsStr: ',8,30,11,36,13,27,6,' }
   ];
 
-  const handleButtonClick = (value: string) => {
-    setlastLimit(value);
-    updatecalculatedValue(value);
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setlastLimit(e.target.value);
-    updatecalculatedValue(e.target.value);
-  };
-
-  const updatecalculatedValue = (inputLimit: string) => {
-    const topValues = data.slice(0, parseInt(inputLimit));
-    const result = removeDuplicates(topValues, 'value');
-    const result1 = removeDuplicatesWithCondition(result, 'value', '3');
-    const result2 = removeDuplicatesWithCondition(result1, 'value', '5');
-    setfilteredValues(result2);
-    const tempResult = JSON.parse(JSON.stringify(result2));
-    const result7NeigFil = removeDuplicatesWithCondition(tempResult, 'value', '7');
-    setfilteredValues7Neigs(result7NeigFil);
-  };
-
-  function removeDuplicates(data: MissingTabProps['data'], attribute: keyof MissingTabProps['data'][0]): MissingTabProps['data'] {
-    const countMap: { [key: string]: number } = {};
-    const indexMap: { [key: string]: number[] } = {};
-  
-    // Count occurrences and store indices
-    data.forEach((item, index) => {
-      const value = item[attribute];
-      if (countMap[value]) {
-        countMap[value]++;
-        indexMap[value].push(index);
-      } else {
-        countMap[value] = 1;
-        indexMap[value] = [index];
-      }
-    });
-  
-    // Filter out items with even occurrences and leave one if odd
-    const indicesToRemove = new Set<number>();
-    for (const value in countMap) {
-      if (countMap[value] % 2 === 0) {
-        indexMap[value].forEach(index => indicesToRemove.add(index));
-      } else if (countMap[value] > 1) {
-        indexMap[value].slice(0, countMap[value] - 1).forEach(index => indicesToRemove.add(index));
-      }
-    }
-  
-    return data.filter((_, index) => !indicesToRemove.has(index));
-  }
-  
-  function removeDuplicatesWithCondition(data: MissingTabProps['data'], attribute: keyof MissingTabProps['data'][0], neigLimit: string): MissingTabProps['data'] {
-    let i = 0;
-    while (i < data.length) {
-        let j = i + 1;
-        while (j < data.length) {
-          console.log('1.value:' + data[i][attribute]);
-          const value = data[i][attribute];
-          console.log('2.next value:' + data[j][attribute]);
-          const neigEntry = neigArray.find(neig => neig.numlimit === neigLimit && neig.num === data[j][attribute]);
-          console.log('3.neigEntry.neigsStr:' + neigEntry?.neigsStr);
-          if (neigEntry && neigEntry.neigsStr.includes(','+value+',')) {
-            console.log('4.removed:' + data[i][attribute]);
-            console.log('5.removed 1:' + data[j][attribute]);
-            data.splice(j, 1);
-            data.splice(i, 1);
-            i--; // Adjust index after removal
-            break;
-          } else {
-            console.log('6.not removed:');
-            j++;
-          }
-        }
-        i++;
-    }
-    return data;
-  }
-  
-
   return (
     <div>
       <table>
         <tbody>
-          <tr>
-            <td>
-              <div>
-                <input type="text" value={lastLimit} onChange={handleInputChange} placeholder="Enter manual limit" />
-                <button onClick={() => handleButtonClick('10')}>last 10</button>
-                <button onClick={() => handleButtonClick('12')}>last 12</button>
-                <button onClick={() => handleButtonClick('15')}>last 15</button>
-              </div>
-            </td>
-          </tr>
           <tr>
             <td>
               <div>
@@ -221,31 +130,6 @@ const MissingTab: React.FC<MissingTabProps> = ({ data }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredValues.map((item, index) => (
-                      <tr key={index}>
-                        <td style={{ border: '1px solid black', padding: '8px' }}>{item.value}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div>
-              <table style={{ borderCollapse: 'collapse', width: '100%' }}>
-                  <thead>
-                    <tr>
-                      <th style={{ border: '1px solid black', padding: '8px' }}>7 Neigs</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredValues7Neigs.map((item, index) => (
-                      <tr key={index}>
-                        <td style={{ border: '1px solid black', padding: '8px' }}>{item.value}</td>
-                      </tr>
-                    ))}
                   </tbody>
                 </table>
               </div>
@@ -257,4 +141,4 @@ const MissingTab: React.FC<MissingTabProps> = ({ data }) => {
   );
 };
 
-export default MissingTab;
+export default CommonChecks;

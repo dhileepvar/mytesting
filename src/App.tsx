@@ -6,7 +6,7 @@ import 'react-tabs/style/react-tabs.css';
 import InputFields from './components/Input';
 import Tabs from './components/Tabs';
 const App = () => {
-  const [data, setData] = useState<{ value: string; isVoz: string; isOrp: string; isTi: string; isEnd: string; col: string; type: string; sec: string }[]>([]);
+  const [data, setData] = useState<{ value: string; isVoz: string; isOrp: string; isTi: string; isEnd: string; col: string; type: string; sec: string; rev: string }[]>([]);
   const secTier = [27,13,36,11,30,8,23,10,5,24,16,33];
   const secOrp= [1,20,14,31,9,17,34,6];
   const secVoz = [22,18,29,7,28,12,35,3,26,0,32,15,19,4,21,2,25];
@@ -18,6 +18,7 @@ const App = () => {
   const handleAdd = (value: string) => {
     if (value) {
       const valuesArray = value.split(',').map((val) => val.trim());
+      const isReverse = (data[0].rev == 'Yes')? 'No': 'Yes';
       const newData = valuesArray.map((val) => ({
         value: val,
         isVoz: checkVoz(val,secVoz),
@@ -26,32 +27,46 @@ const App = () => {
         isEnd: checkIsEnd(val, endingNos),
         col: checkCol(val, reNos, blNos),
         type: checkType(val),
-        sec: checkSec(val)
+        sec: checkSec(val),
+        rev: isReverse
       }));
       setData([...newData, ...data]);
     }
   };
 
-  const handleSubmit = (value: string) => {
+  const handleSubmit = (value: string, isChecked: boolean) => {
     if (value) {
       const valuesArray = value.split(' ').map((val) => val.trim());
-      const newData = valuesArray.map((val) => ({
-        value: val,
-        isVoz: checkVoz(val,secVoz),
-        isOrp: checkOrp(val, secOrp),
-        isTi: checkTie(val, secTier),
-        isEnd: checkIsEnd(val, endingNos),
-        col: checkCol(val, reNos, blNos),
-        type: checkType(val),
-        sec: checkSec(val)
-      }));
+      let isReverse = isChecked;
+      
+      const newData = valuesArray.map((val) => {
+        const newItem = {
+          value: val,
+          isVoz: checkVoz(val, secVoz),
+          isOrp: checkOrp(val, secOrp),
+          isTi: checkTie(val, secTier),
+          isEnd: checkIsEnd(val, endingNos),
+          col: checkCol(val, reNos, blNos),
+          type: checkType(val),
+          sec: checkSec(val),
+          rev: isReverse ? 'Yes' : 'No'
+        };
+        isReverse = !isReverse;  
+        return newItem;
+      });
+  
       setData(newData);
     }
+  };
+  
+
+  const handleEdit = () => {
+    return data.map(obj => obj.value).join(" ");
   };
 
   return (
     <div>
-      <InputFields onAdd={handleAdd} onSubmit={handleSubmit} />
+      <InputFields onAdd={handleAdd} onSubmit={handleSubmit} onEdit={handleEdit}/>
       <Tabs data={data} />
     </div>
   );

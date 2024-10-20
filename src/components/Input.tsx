@@ -3,12 +3,18 @@ import './InputFields.css';
 
 interface InputFieldsProps {
   onAdd: (value: string) => void;
-  onSubmit: (value: string) => void;
+  onSubmit: (value: string, isChecked: boolean) => void;
+  onEdit: () => string;
 }
 
-const InputFields: React.FC<InputFieldsProps> = ({ onAdd, onSubmit }) => {
+const InputFields: React.FC<InputFieldsProps> = ({ onAdd, onSubmit, onEdit }) => {
   const [inputValue, setInputValue] = useState('');
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
+
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setIsChecked(event.target.checked);
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -23,8 +29,14 @@ const InputFields: React.FC<InputFieldsProps> = ({ onAdd, onSubmit }) => {
   };
 
   const handleSubmit = () => {
-    onSubmit(inputValue);
+    onSubmit(inputValue, isChecked);
+    setIsSubmitDisabled(!isSubmitDisabled);
     setInputValue('');
+  };
+
+  const handleEdit = () => {
+    const editStr = onEdit();
+    setInputValue(editStr);
   };
 
   const toggleSubmitButton = () => {
@@ -33,7 +45,7 @@ const InputFields: React.FC<InputFieldsProps> = ({ onAdd, onSubmit }) => {
 
   return (
     <div className="input-container">
-      <input
+      <input style={{ width: '500px' }}
         type="text"
         placeholder="Enter values with space starts with latest"
         value={inputValue}
@@ -44,6 +56,11 @@ const InputFields: React.FC<InputFieldsProps> = ({ onAdd, onSubmit }) => {
       <button onClick={toggleSubmitButton}>
         {isSubmitDisabled ? 'Enable Submit' : 'Disable Submit'}
       </button>
+      <button onClick={handleEdit} disabled={isSubmitDisabled}>Edit</button>
+      <label>
+        <input type="checkbox" disabled={isSubmitDisabled} checked={isChecked} onChange={handleCheckboxChange} />
+        Is Reverse!
+      </label>
     </div>
   );
 };
