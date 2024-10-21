@@ -22,7 +22,6 @@ const DetailsTab: React.FC<TabOneProps> = ({ data }) => {
         <table>
               <tbody>
                 <tr>
-                  <td><MissingTab data={data} /></td>
                 </tr>
               </tbody>
             </table>

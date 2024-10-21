@@ -8,7 +8,11 @@ const MissingTab: React.FC<MissingTabProps> = ({ data }) => {
   const [lastLimit, setlastLimit] = useState('');
   const [filteredValues, setfilteredValues] = useState<{ value: string; isVoz: string; isOrp: string; isTi: string; isEnd: string; col: string; type: string; sec: string; rev: string }[]>([]);
   const [filteredValues7Neigs, setfilteredValues7Neigs] = useState<{ value: string; isVoz: string; isOrp: string; isTi: string; isEnd: string; col: string; type: string; sec: string; rev: string }[]>([]);
-  const neigArray = [
+  const [filteredValuesRev, setfilteredValuesRev] = useState<{ value: string; isVoz: string; isOrp: string; isTi: string; isEnd: string; col: string; type: string; sec: string; rev: string }[]>([]);
+  const [filteredValues7NeigsRev, setfilteredValues7NeigsRev] = useState<{ value: string; isVoz: string; isOrp: string; isTi: string; isEnd: string; col: string; type: string; sec: string; rev: string }[]>([]);
+  const [filteredValuesFor, setfilteredValuesFor] = useState<{ value: string; isVoz: string; isOrp: string; isTi: string; isEnd: string; col: string; type: string; sec: string; rev: string }[]>([]);
+  const [filteredValues7NeigsFor, setfilteredValues7NeigsFor] = useState<{ value: string; isVoz: string; isOrp: string; isTi: string; isEnd: string; col: string; type: string; sec: string; rev: string }[]>([]);
+    const neigArray = [
     { numlimit: '3', num: '0', neigsStr: ',32,0,26,' },
     { numlimit: '5', num: '0', neigsStr: ',15,32,0,26,3,' },
     { numlimit: '7', num: '0', neigsStr: ',19,15,32,0,26,3,35,' },
@@ -122,15 +126,19 @@ const MissingTab: React.FC<MissingTabProps> = ({ data }) => {
   const handleButtonClick = (value: string) => {
     setlastLimit(value);
     updatecalculatedValue(value);
+    updatecalculatedValueNew(value);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setlastLimit(e.target.value);
     updatecalculatedValue(e.target.value);
+    updatecalculatedValueNew(e.target.value);
   };
 
   const updatecalculatedValue = (inputLimit: string) => {
     const topValues = data.slice(0, parseInt(inputLimit));
+    const valuesString = data.map(item => item.value).join(', ');
+    console.log('All Values' + valuesString);
     const result = removeDuplicates(topValues, 'value');
     const result1 = removeDuplicatesWithCondition(result, 'value', '3');
     const result2 = removeDuplicatesWithCondition(result1, 'value', '5');
@@ -138,6 +146,29 @@ const MissingTab: React.FC<MissingTabProps> = ({ data }) => {
     const tempResult = JSON.parse(JSON.stringify(result2));
     const result7NeigFil = removeDuplicatesWithCondition(tempResult, 'value', '7');
     setfilteredValues7Neigs(result7NeigFil);
+  };
+
+  const updatecalculatedValueNew = (inputLimit: string) => {
+    const topRevValues = data.filter(item => item.rev === 'R').slice(0, parseInt(inputLimit));
+    const RevString = topRevValues.map(item => item.value).join(', ');
+    console.log('Rev Values' + RevString);
+    const topForValues = data.filter(item => item.rev === 'F').slice(0, parseInt(inputLimit));
+    const ForString = topForValues.map(item => item.value).join(', ');
+    console.log('For Values' + ForString);
+    const resultRev1 = removeDuplicates(topRevValues, 'value');
+    const resultFor1 = removeDuplicates(topForValues, 'value');
+    const resultRev2 = removeDuplicatesWithCondition(resultRev1, 'value', '3');
+    const resultFor2 = removeDuplicatesWithCondition(resultFor1, 'value', '3');
+    const resultRev3 = removeDuplicatesWithCondition(resultRev2, 'value', '5');
+    const resultFor3 = removeDuplicatesWithCondition(resultFor2, 'value', '5');
+    setfilteredValuesRev(resultRev3);
+    setfilteredValuesFor(resultFor3);
+    const tempResultRev = JSON.parse(JSON.stringify(resultRev3));
+    const tempResultFor = JSON.parse(JSON.stringify(resultFor3));
+    const result7NeigFilRev = removeDuplicatesWithCondition(tempResultRev, 'value', '7');
+    const result7NeigFilFor = removeDuplicatesWithCondition(tempResultFor, 'value', '7');
+    setfilteredValues7NeigsRev(result7NeigFilRev);
+    setfilteredValues7NeigsFor(result7NeigFilFor);
   };
 
   function removeDuplicates(data: MissingTabProps['data'], attribute: keyof MissingTabProps['data'][0]): MissingTabProps['data'] {
@@ -242,6 +273,86 @@ const MissingTab: React.FC<MissingTabProps> = ({ data }) => {
                   </thead>
                   <tbody>
                     {filteredValues7Neigs.map((item, index) => (
+                      <tr key={index}>
+                        <td style={{ border: '1px solid black', padding: '8px' }}>{item.value}-{item.rev}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </td>
+          </tr>
+          <tr>
+          <td>
+              <div>
+              <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+                  <thead>
+                    <tr>
+                      <th style={{ border: '1px solid black', padding: '8px' }}>Rev only -5</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredValuesRev.map((item, index) => (
+                      <tr key={index}>
+                        <td style={{ border: '1px solid black', padding: '8px' }}>{item.value}-{item.rev}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </td>
+          </tr>
+          <tr>
+          <td>
+              <div>
+              <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+                  <thead>
+                    <tr>
+                      <th style={{ border: '1px solid black', padding: '8px' }}>For only-5</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredValuesFor.map((item, index) => (
+                      <tr key={index}>
+                        <td style={{ border: '1px solid black', padding: '8px' }}>{item.value}-{item.rev}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </td>
+          </tr>
+          <tr>
+          <td>
+              <div>
+              <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+                  <thead>
+                    <tr>
+                      <th style={{ border: '1px solid black', padding: '8px' }}>Rev only -7</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredValues7NeigsRev.map((item, index) => (
+                      <tr key={index}>
+                        <td style={{ border: '1px solid black', padding: '8px' }}>{item.value}-{item.rev}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </td>
+          </tr>
+          <tr>
+          <td>
+              <div>
+              <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+                  <thead>
+                    <tr>
+                      <th style={{ border: '1px solid black', padding: '8px' }}>For only 7</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredValues7NeigsFor.map((item, index) => (
                       <tr key={index}>
                         <td style={{ border: '1px solid black', padding: '8px' }}>{item.value}-{item.rev}</td>
                       </tr>
