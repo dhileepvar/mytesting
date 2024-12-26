@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface MissingTabProps {
-  data: { value: string; isVoz: string; isOrp: string; isTi: string; isEnd: string; col: string; type: string; sec: string; rev: string }[];
+  data: { value: string; isVoz: string; isOrp: string; isTi: string; isEnd: string; col: string; type: string; sec: string; rev: string; wicCol: string }[];
 }
 
 const MissingTab: React.FC<MissingTabProps> = ({ data }) => {
@@ -12,7 +12,7 @@ const MissingTab: React.FC<MissingTabProps> = ({ data }) => {
   const [filteredValues7NeigsRev, setfilteredValues7NeigsRev] = useState<{ value: string; isVoz: string; isOrp: string; isTi: string; isEnd: string; col: string; type: string; sec: string; rev: string }[]>([]);
   const [filteredValuesFor, setfilteredValuesFor] = useState<{ value: string; isVoz: string; isOrp: string; isTi: string; isEnd: string; col: string; type: string; sec: string; rev: string }[]>([]);
   const [filteredValues7NeigsFor, setfilteredValues7NeigsFor] = useState<{ value: string; isVoz: string; isOrp: string; isTi: string; isEnd: string; col: string; type: string; sec: string; rev: string }[]>([]);
-    const neigArray = [
+  const neigArray = [
     { numlimit: '3', num: '0', neigsStr: ',32,0,26,' },
     { numlimit: '5', num: '0', neigsStr: ',15,32,0,26,3,' },
     { numlimit: '7', num: '0', neigsStr: ',19,15,32,0,26,3,35,' },
@@ -42,7 +42,7 @@ const MissingTab: React.FC<MissingTabProps> = ({ data }) => {
     { numlimit: '7', num: '8', neigsStr: ',5,10,23,8,30,11,36,' },
     { numlimit: '3', num: '9', neigsStr: ',22,9,31,' },
     { numlimit: '5', num: '9', neigsStr: ',18,22,9,31,14,' },
-    { numlimit: '7', num: '9', neigsStr: ',29,18,22,9,31,14,20,' },
+    { numlimit: '7', num: '9', neigsStr: ',29,18,22,9,31,14,31,' },
     { numlimit: '3', num: '10', neigsStr: ',5,10,23,' },
     { numlimit: '5', num: '10', neigsStr: ',24,5,10,23,8,' },
     { numlimit: '7', num: '10', neigsStr: ',16,24,5,10,23,8,30,' },
@@ -87,7 +87,7 @@ const MissingTab: React.FC<MissingTabProps> = ({ data }) => {
     { numlimit: '7', num: '23', neigsStr: ',24,5,10,23,8,30,11,' },
     { numlimit: '3', num: '24', neigsStr: ',16,24,5,' },
     { numlimit: '5', num: '24', neigsStr: ',33,16,24,5,10,' },
-    { numlimit: '7', num: '24', neigsStr: ',1,33,16,24,5,10,23,' },
+    { numlimit: '7', num: '24', neigsStr: ',1,33,16,24,5,10,5,' },
     { numlimit: '3', num: '25', neigsStr: ',17,25,2,' },
     { numlimit: '5', num: '25', neigsStr: ',34,17,25,2,21,' },
     { numlimit: '7', num: '25', neigsStr: ',6,34,17,25,2,21,4,' },
@@ -99,7 +99,7 @@ const MissingTab: React.FC<MissingTabProps> = ({ data }) => {
     { numlimit: '7', num: '27', neigsStr: ',11,36,13,27,6,34,17,' },
     { numlimit: '3', num: '28', neigsStr: ',12,28,7,' },
     { numlimit: '5', num: '28', neigsStr: ',35,12,28,7,29,' },
-    { numlimit: '7', num: '28', neigsStr: ',3,35,12,28,7,29,18,' },
+    { numlimit: '7', num: '29', neigsStr: ',3,35,12,28,7,29,18,' },
     { numlimit: '3', num: '30', neigsStr: ',8,30,11,' },
     { numlimit: '5', num: '30', neigsStr: ',23,8,30,11,36,' },
     { numlimit: '7', num: '30', neigsStr: ',10,23,8,30,11,36,13,' },
@@ -122,6 +122,12 @@ const MissingTab: React.FC<MissingTabProps> = ({ data }) => {
     { numlimit: '5', num: '36', neigsStr: ',30,11,36,13,27,' },
     { numlimit: '7', num: '36', neigsStr: ',8,30,11,36,13,27,6,' }
   ];
+
+  useEffect(() => {
+    setlastLimit('12');
+    updatecalculatedValue('12');
+    updatecalculatedValueNew('12');
+  }, [data]);
 
   const handleButtonClick = (value: string) => {
     setlastLimit(value);
@@ -244,45 +250,49 @@ const MissingTab: React.FC<MissingTabProps> = ({ data }) => {
           </tr>
           <tr>
             <td>
-              <div>
-                <table style={{ borderCollapse: 'collapse', width: '100%' }}>
-                  <thead>
-                    <tr>
-                      <th style={{ border: '1px solid black', padding: '8px' }}>5 Neigs</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredValues.map((item, index) => (
-                      <tr key={index}>
-                        <td style={{ border: '1px solid black', padding: '8px' }}>{item.value}-{item.rev}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+              <table>
+                <tr>
+                  <td>
+                  <div>
+                      <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+                        <thead>
+                          <tr>
+                            <th style={{ border: '1px solid black', padding: '8px' }}>5 Ne</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {filteredValues.map((item, index) => (
+                            <tr key={index}>
+                              <td style={{ border: '1px solid black', padding: '8px' }}>{item.value}-{item.rev}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </td>
+                  <td>
+                  <div>
+                    <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+                        <thead>
+                          <tr>
+                            <th style={{ border: '1px solid black', padding: '8px' }}>7 Ne</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {filteredValues7Neigs.map((item, index) => (
+                            <tr key={index}>
+                              <td style={{ border: '1px solid black', padding: '8px' }}>{item.value}-{item.rev}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </td>
+                </tr>
+              </table>              
             </td>
           </tr>
-          <tr>
-            <td>
-              <div>
-              <table style={{ borderCollapse: 'collapse', width: '100%' }}>
-                  <thead>
-                    <tr>
-                      <th style={{ border: '1px solid black', padding: '8px' }}>7 Neigs</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredValues7Neigs.map((item, index) => (
-                      <tr key={index}>
-                        <td style={{ border: '1px solid black', padding: '8px' }}>{item.value}-{item.rev}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </td>
-          </tr>
-          <tr>
+          {/*<tr>
           <td>
               <div>
               <table style={{ borderCollapse: 'collapse', width: '100%' }}>
@@ -361,7 +371,7 @@ const MissingTab: React.FC<MissingTabProps> = ({ data }) => {
                 </table>
               </div>
             </td>
-          </tr>
+          </tr>*/}
         </tbody>
       </table>
     </div>

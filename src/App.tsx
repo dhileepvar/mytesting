@@ -5,15 +5,20 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import 'react-tabs/style/react-tabs.css';
 import InputFields from './components/Input';
 import Tabs from './components/Tabs';
+import TopInfo from './components/TopInfo';
+import TopThreeCheck from './components/TopThreeCheck';
+import Wheel from './components/Wheel';
 const App = () => {
-  const [data, setData] = useState<{ value: string; isVoz: string; isOrp: string; isTi: string; isEnd: string; col: string; type: string; sec: string; rev: string }[]>([]);
+  const [data, setData] = useState<{ value: string; isVoz: string; isOrp: string; isTi: string; isEnd: string; col: string; type: string; sec: string; rev: string; wicCol: string }[]>([]);
   const secTier = [27,13,36,11,30,8,23,10,5,24,16,33];
   const secOrp= [1,20,14,31,9,17,34,6];
   const secVoz = [22,18,29,7,28,12,35,3,26,0,32,15,19,4,21,2,25];
   const endingNos = [27,6,33,1,22,9,25,17,19,15,28,12];
   const reNos = [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36];
   const blNos = [2,4,6,8,10,11,13,15,17,20,22,24,26,28,29,31,33,35];
-  
+  const coLeft = [1,4,7,10,13,16,19,22,25,28,31,34];
+  const coMid = [2,5,8,11,14,17,20,23,26,29,32,35];
+  const coRig = [3,6,9,12,15,18,21,24,27,30,33,36];
 
   const handleAdd = (value: string) => {
     if (value) {
@@ -28,7 +33,8 @@ const App = () => {
         col: checkCol(val, reNos, blNos),
         type: checkType(val),
         sec: checkSec(val),
-        rev: isReverse
+        rev: isReverse,
+        wicCol: 'R'
       }));
       setData([...newData, ...data]);
     }
@@ -49,7 +55,8 @@ const App = () => {
           col: checkCol(val, reNos, blNos),
           type: checkType(val),
           sec: checkSec(val),
-          rev: isReverse ? 'R' : 'F'
+          rev: isReverse ? 'R' : 'F',
+          wicCol: checkWicCol(val,coLeft,coMid,coRig)
         };
         isReverse = !isReverse;  
         return newItem;
@@ -66,8 +73,46 @@ const App = () => {
 
   return (
     <div>
-      <InputFields onAdd={handleAdd} onSubmit={handleSubmit} onEdit={handleEdit}/>
-      <Tabs data={data} />
+      <table>
+        <tr>
+          <td>
+            <table>
+              <tr>
+                <td> 
+                  <InputFields onAdd={handleAdd} onSubmit={handleSubmit} onEdit={handleEdit}/>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div>
+                    <table>
+                      <tr>
+                        <td>
+                          <TopInfo data={data} />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <Tabs data={data} />
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <div>0-- 26 - 3 -- 35- 12 - 28 - 7 -- 29 - 18 - 22 - 9 -- 31 - 14 - 20 - 1 - 33 - 16 - 24</div>
+              </tr>
+              <tr>
+                <div>00 10 - 23 --8-- 30 - 11 - 36 - 13 - 27 - 6 -- 34 - 17 - 25 - 2 -- 21 - 4 - 19 - 15</div>
+              </tr>
+            </table>
+          </td>
+          <td className="top-three-check">
+                <TopThreeCheck data={data} />
+                </td>
+        </tr>
+      </table>
     </div>
   );
 };
@@ -119,6 +164,18 @@ function checkSec(val: string): string {
     return '.........2';
   }else{
     return '........................3';
+  }
+}
+
+function checkWicCol(val: string, coLeft: number[], coMid: number[], coRig: number[]): string {
+  if(coLeft.some(element => element === parseInt(val))){
+    return 'Le';
+  }else if(coMid.some(element => element === parseInt(val))){
+    return 'Mi';
+  }else if(coRig.some(element => element === parseInt(val))){
+    return 'Ri';
+  }else {
+    return '';
   }
 }
 

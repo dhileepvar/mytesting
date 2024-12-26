@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface TabTwoProps {
-  data: { value: string; isVoz: string; isOrp: string; isTi: string; isEnd: string; col: string; type: string; sec: string; rev: string  }[];
+  data: { value: string; isVoz: string; isOrp: string; isTi: string; isEnd: string; col: string; type: string; sec: string; rev: string; wicCol: string }[];
 }
 
 const TabTwo: React.FC<TabTwoProps> = ({ data }) => {

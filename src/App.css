@@ -36,3 +36,13 @@
     transform: rotate(360deg);
   }
 }
+
+.top-three-check {
+  position: relative;
+  z-index: 10; /* A higher value to ensure it is on top */
+  background: white; /* Optional: Add a background to ensure readability */
+  padding: 10px; /* Optional: Add padding for better spacing */
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle shadow for better separation */
+  width: 30%;
+}
+
