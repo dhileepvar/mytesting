@@ -19,7 +19,26 @@ const App = () => {
   const coLeft = [1,4,7,10,13,16,19,22,25,28,31,34];
   const coMid = [2,5,8,11,14,17,20,23,26,29,32,35];
   const coRig = [3,6,9,12,15,18,21,24,27,30,33,36];
-
+  const Opposites = [
+    '32-5',
+    '15-24',
+    '19-16',
+    '4-33',
+    '21-1',
+    '2-20',
+    '25-14',
+    '17-31',
+    '34-9',
+    '6-22',
+    '27-18',
+    '13-29',
+    '36-7',
+    '11-28',
+    '30-12',
+    '8-35',
+    '23-3',
+    '10-26'
+  ];
   const handleAdd = (value: string) => {
     if (value) {
       const valuesArray = value.split(',').map((val) => val.trim());
@@ -34,7 +53,7 @@ const App = () => {
         type: checkType(val),
         sec: checkSec(val),
         rev: isReverse,
-        wicCol: 'R'
+        wicCol: checkWicCol(val,coLeft,coMid,coRig)
       }));
       setData([...newData, ...data]);
     }
@@ -81,36 +100,33 @@ const App = () => {
                 <td> 
                   <InputFields onAdd={handleAdd} onSubmit={handleSubmit} onEdit={handleEdit}/>
                 </td>
+                <td>
+                  <TopInfo data={data} />
+                </td>
               </tr>
               <tr>
                 <td>
                   <div>
                     <table>
                       <tr>
+                        <td className="top-three-check">
+                          <TopThreeCheck data={data} />
+                        </td>
                         <td>
-                          <TopInfo data={data} />
+                          <Tabs data={data} />
                         </td>
                       </tr>
                       <tr>
                         <td>
-                          <Tabs data={data} />
+                          <div style={{ display: 'flex', flexWrap: 'wrap' }}> {Opposites.map((opposite, index) => ( <div key={index} style={{ padding: '5px', border: '1px solid #ccc', margin: '5px' }}> {opposite} </div> ))} </div>
                         </td>
                       </tr>
                     </table>
                   </div>
                 </td>
               </tr>
-              <tr>
-                <div>0-- 26 - 3 -- 35- 12 - 28 - 7 -- 29 - 18 - 22 - 9 -- 31 - 14 - 20 - 1 - 33 - 16 - 24</div>
-              </tr>
-              <tr>
-                <div>00 10 - 23 --8-- 30 - 11 - 36 - 13 - 27 - 6 -- 34 - 17 - 25 - 2 -- 21 - 4 - 19 - 15</div>
-              </tr>
             </table>
           </td>
-          <td className="top-three-check">
-                <TopThreeCheck data={data} />
-                </td>
         </tr>
       </table>
     </div>

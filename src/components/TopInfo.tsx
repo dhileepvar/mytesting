@@ -8,7 +8,7 @@ const TopInfo: React.FC<TopInfoProps> = ({ data }) => {
         <div>
             <table>
                 <tr>
-                    <td>
+                     <td>
                         <div style={{ display: 'flex' }}>
                             {topData.map((item, index) => (
                             <div
