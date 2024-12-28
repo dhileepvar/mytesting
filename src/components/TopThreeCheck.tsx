@@ -310,6 +310,7 @@ const TopThreeCheck: React.FC<TopThreeCheckProps> = ({ data }) => {
     {Comb:[30,32,34], style: '╱', quad: '3'},
     {Comb:[11,22,33], style: 'com', quad: '1'},
     {Comb:[1,18,36], style: 'com', quad: '1'},
+    {Comb:[1,4,6], style: 'com', quad: '1'},
     {Comb:[12,21,26,34], style: '12co', quad: '1'},
     {Comb:[2,12,22,32,11,20,22,24,29], style: '2co', quad: '1'},
     {Comb:[5,15,25,35,10,20,30], style: '5co', quad: '1'},
