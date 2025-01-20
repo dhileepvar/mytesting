@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import 'react-tabs/style/react-tabs.css';
 import InputFields from './components/Input';
 import Tabs from './components/Tabs';
@@ -39,6 +40,15 @@ const App = () => {
     '23-3',
     '10-26'
   ];
+
+  useEffect(() => {
+    const cookieData = localStorage.getItem('data'); 
+    if (cookieData) {
+      handleSubmit(cookieData, false) 
+    } }, []);
+
+
+
   const handleAdd = (value: string) => {
     if (value) {
       const valuesArray = value.split(',').map((val) => val.trim());
@@ -56,6 +66,7 @@ const App = () => {
         wicCol: checkWicCol(val,coLeft,coMid,coRig)
       }));
       setData([...newData, ...data]);
+      localStorage.setItem('data', data.map(obj => obj.value).join(" "));
     }
   };
 
@@ -194,5 +205,17 @@ function checkWicCol(val: string, coLeft: number[], coMid: number[], coRig: numb
     return '';
   }
 }
+
+const setCookie = (name: string, value: string, days: number) => {
+  const expires = new Date(Date.now() + days * 86400000).toUTCString();
+  document.cookie = `${name}=${encodeURIComponent(value)};
+  expires=${expires}; path=/`;
+};
+
+const getCookie = (name: string) => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop()?.split(';').shift();
+};
 
 
