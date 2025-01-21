@@ -25,7 +25,7 @@ const TopThreeCheck: React.FC<TopThreeCheckProps> = ({ data }) => {
   const [ThreeStyleArray, set3StyleArray] = useState<finalResult[]>([]);
   const [ThreeComArray, set3ComArray] = useState<finalResult[]>([]);
   const [FiveStyleArray, set5StyleArray] = useState<finalResult[]>([]);
-  const [AltCheckArray, setAltCheckArray] = useState<PossibleValue[]>([]);
+  const [AltCheckArray, setAltCheckArray] = useState<string>('');
 
   const neigArray = [
     { numlimit: '3', num: '0', neigsStr: ',32,0,26,' },
@@ -804,7 +804,7 @@ const TopThreeCheck: React.FC<TopThreeCheckProps> = ({ data }) => {
       const temp5array: finalResult[] = [];
       const temp5BINarray: finalResult[] = [];
       const temp5Stylearray: finalResult[] = [];
-      const tempaltarray: PossibleValue[] = [];
+      const tempaltarray: string = '';
 
       combinations.forEach(combination => {
         console.log(`Checking data item value: ${combination}`);
@@ -845,42 +845,10 @@ const TopThreeCheck: React.FC<TopThreeCheckProps> = ({ data }) => {
       //set5BINArray(temp5BINarray);
       //set5StyleArray(temp5Stylearray);
 
-      const top5Values = data.slice(0, 4);
-      let Count = 0;
-      let firstarray: string[] = []; 
-      let secarray: string[] = []; let thiarray: string[] = []; let fouarray: string[] = []; let fivarray: string[] = [];
-      top5Values.forEach(item => {
-        const currVal = item.value;
-        const result = Opposites.find(item => item.num === currVal);
-        const oppVal = result ? result.opp : '0';
-        if (Count === 0){
-          firstarray.push(oppVal);
-          secarray.push(currVal);
-          thiarray.push(currVal);
-          fouarray.push(currVal);
-        }else if (Count === 1){
-          firstarray.push(currVal);
-          secarray.push(oppVal);
-          thiarray.push(currVal);
-          fouarray.push(currVal);
-        }else if (Count === 2){
-          firstarray.push(currVal);
-          secarray.push(currVal);
-          thiarray.push(oppVal);
-          fouarray.push(currVal);
-        }else if (Count === 3){
-          firstarray.push(currVal);
-          secarray.push(currVal);
-          thiarray.push(currVal);
-          fouarray.push(oppVal);
-        }
-        Count++;
-      });
-      tempaltarray.push({ Value: firstarray.join(',') });
-      tempaltarray.push({ Value: secarray.join(',') });
-      tempaltarray.push({ Value: thiarray.join(',') });
-      tempaltarray.push({ Value: fouarray.join(',') });
-      setAltCheckArray(tempaltarray);
+      let firstNo: string = data[0].value;
+      let secondNo: string = data[0].value;
+      let thirdNo: string = data[0].value;
+      
   }, [data]);
 
   return (
@@ -888,20 +856,6 @@ const TopThreeCheck: React.FC<TopThreeCheckProps> = ({ data }) => {
       <table>
         <tr>
           <td>
-              <table style={{ border: '1px solid black', width: '250px', borderCollapse: 'collapse' }}>
-                <thead>
-                  <tr>
-                    <th style={{ border: '1px solid black', padding: '8px' }}>Only</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {AltCheckArray.map((item, index) => (
-                    <tr key={index}>
-                      <td style={{ border: '1px solid black', padding: '8px' }}>{item.Value}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
           </td>
           <td>
             <table style={{ border: '1px solid black', width: '250px', borderCollapse: 'collapse' }}>

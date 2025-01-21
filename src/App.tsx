@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Cookies from 'js-cookie';
 import 'react-tabs/style/react-tabs.css';
 import InputFields from './components/Input';
-import Tabs from './components/Tabs';
-import TopInfo from './components/TopInfo';
 import TopThreeCheck from './components/TopThreeCheck';
-import Wheel from './components/Wheel';
+import MissingTab from './components/MissingTab';
 const App = () => {
   const [data, setData] = useState<{ value: string; isVoz: string; isOrp: string; isTi: string; isEnd: string; col: string; type: string; sec: string; rev: string; wicCol: string }[]>([]);
   const secTier = [27,13,36,11,30,8,23,10,5,24,16,33];
@@ -109,10 +104,7 @@ const App = () => {
             <table>
               <tr>
                 <td> 
-                  <InputFields onAdd={handleAdd} onSubmit={handleSubmit} onEdit={handleEdit}/>
-                </td>
-                <td>
-                  <TopInfo data={data} />
+                  <InputFields onAdd={handleAdd} onSubmit={handleSubmit} onEdit={handleEdit} data={data}/>
                 </td>
               </tr>
               <tr>
@@ -120,11 +112,11 @@ const App = () => {
                   <div>
                     <table>
                       <tr>
-                        <td className="top-three-check">
+                        <td style={{width:'250px'}}>
                           <TopThreeCheck data={data} />
                         </td>
-                        <td>
-                          <Tabs data={data} />
+                        <td style={{verticalAlign: 'top', border: '1px solid black', borderCollapse: 'collapse' }}>
+                          <MissingTab data={data} />
                         </td>
                       </tr>
                       <tr>
