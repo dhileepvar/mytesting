@@ -845,9 +845,9 @@ const TopThreeCheck: React.FC<TopThreeCheckProps> = ({ data }) => {
       //set5BINArray(temp5BINarray);
       //set5StyleArray(temp5Stylearray);
 
-      let firstNo: string = data[0].value;
-      let secondNo: string = data[0].value;
-      let thirdNo: string = data[0].value;
+      //let firstNo: string = data[0].value;
+      //let secondNo: string = data[0].value;
+      //let thirdNo: string = data[0].value;
       
   }, [data]);
 
