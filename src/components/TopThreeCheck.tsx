@@ -25,7 +25,7 @@ const TopThreeCheck: React.FC<TopThreeCheckProps> = ({ data }) => {
   const [ThreeStyleArray, set3StyleArray] = useState<finalResult[]>([]);
   const [ThreeComArray, set3ComArray] = useState<finalResult[]>([]);
   const [FiveStyleArray, set5StyleArray] = useState<finalResult[]>([]);
-  const [AltCheckArray, setAltCheckArray] = useState<string>('');
+  const [AltCheckArray, setAltCheckArray] = useState<finalResult[]>([]);
 
   const neigArray = [
     { numlimit: '3', num: '0', neigsStr: ',32,0,26,' },
@@ -804,137 +804,95 @@ const TopThreeCheck: React.FC<TopThreeCheckProps> = ({ data }) => {
       const temp5array: finalResult[] = [];
       const temp5BINarray: finalResult[] = [];
       const temp5Stylearray: finalResult[] = [];
-      const tempaltarray: string = '';
+      const tempaltarray: finalResult[] = [];
+      const mustArray: number[][] = [];
+      const quadArray: number[][] = [];
+      const binArray: number[][] = [];
+      const styleArray: number[][] = [];
+      const comArray: number[][] = [];
 
       combinations.forEach(combination => {
         console.log(`Checking data item value: ${combination}`);
         const foundResultThree = CheckforCombination(combination.Comb, 3, data, neigArray);
         const splitResult = foundResultThree.split('--');
         if(foundResultThree != ''){
+          const tempNearVals = filterNeigArray(neigArray, '3', splitResult[1].toString());
+          const trimmedString = tempNearVals.replace(/^,|,$/g, '');
+          const numberArray = trimmedString.split(',').map(Number);
           if(combination.quad === '1' || combination.quad === 'A1'){
             temp3array.push({Combination: splitResult[0], Style: combination.style, Missing: splitResult[1]});
+            mustArray.push(numberArray);
           }else if(combination.quad === '2' || combination.quad === 'A2'){
             temp3Quadarray.push({Combination: splitResult[0], Style: combination.style, Missing: splitResult[1]});
+            quadArray.push(numberArray);
           }else if(combination.quad === '3' || combination.quad === 'A3'){
             temp3Stylearray.push({Combination: splitResult[0], Style: combination.style, Missing: splitResult[1]});
+            styleArray.push(numberArray);
           }else if(combination.quad === '4' || combination.quad === 'A4'){
             temp3BINarray.push({Combination: splitResult[0], Style: combination.style, Missing: splitResult[1]});
+            binArray.push(numberArray);
           }else {
             temp3Comarray.push({Combination: splitResult[0], Style: combination.style, Missing: splitResult[1]});
+            comArray.push(numberArray);
           }
         }
-        /*const foundResultFive = CheckforCombination(combination.Comb, 5, data, neigArray);
-        const splitResultFive = foundResultFive.split('--');
-        let tempValue = {Combination: splitResultFive[0], Style: combination.style, Missing: splitResultFive[1]};
-        if(foundResultFive != '' && !temp3array.includes(tempValue) && !temp3BINarray.includes(tempValue) && !temp3Stylearray.includes(tempValue)){
-          if(combination.quad === '1'){
-            temp5array.push(tempValue);
-          }else if(combination.quad === '2'){
-            temp5BINarray.push(tempValue);
-          }else{
-            temp5Stylearray.push(tempValue);
-          }
-        }*/
+      });
+      
+      if(data.length > 0){
+        let firstNo: string = data[0].value;
+        let secondNo: string = data[0].value;
+        let thirdNo: string = data[0].value;
+      }
+
+      tempaltarray.push({
+        Combination: 'Must', Missing: mustArray.join('--'),
+        Style: ''
+      });
+      tempaltarray.push({
+        Combination: 'QUAD', Missing: quadArray.join('--'),
+        Style: ''
+      });
+      tempaltarray.push({
+        Combination: 'Com', Missing: comArray.join('--'),
+        Style: ''
+      });
+      tempaltarray.push({
+        Combination: 'Style', Missing: styleArray.join('--'),
+        Style: ''
+      });
+      tempaltarray.push({
+        Combination: 'BIN', Missing: binArray.join('--'),
+        Style: ''
       });
       set3CheckArray(temp3array);
       set3BINArray(temp3BINarray);
       set3StyleArray(temp3Stylearray);
       set3QuadArray(temp3Quadarray);
       set3ComArray(temp3Comarray);
-      //set5CheckArray(temp5array);
-      //set5BINArray(temp5BINarray);
-      //set5StyleArray(temp5Stylearray);
-
-      //let firstNo: string = data[0].value;
-      //let secondNo: string = data[0].value;
-      //let thirdNo: string = data[0].value;
-      
+      setAltCheckArray(tempaltarray);      
   }, [data]);
 
   return (
     <div>
       <table>
-        <tr>
+      <tr>
           <td>
-          </td>
-          <td>
-            <table style={{ border: '1px solid black', width: '250px', borderCollapse: 'collapse' }}>
+            <table style={{ border: '1px solid black', width: '250px', borderCollapse: 'collapse', marginBottom:'5px' }}>
                 <thead>
                   <tr>
-                    <th style={{ border: '1px solid black', padding: '8px' }}>Must</th>
+                    <th style={{ border: '1px solid black', padding: '8px' }}>Final</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {ThreeCheckArray.map((item, index) => (
+                  {AltCheckArray.map((item, index) => (
                     <tr key={index}>
                       <td style={{ border: '1px solid black', padding: '8px' }}>{item.Combination}</td>
-                      <td style={{ border: '1px solid black', padding: '8px' }}>{item.Style}</td>
                       <td style={{ border: '1px solid black', padding: '8px' }}>{item.Missing}</td>
                     </tr>
                   ))}
                 </tbody>
             </table>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <table style={{ border: '1px solid black', width: '250px', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr>
-                  <th style={{ border: '1px solid black', padding: '8px' }}>Quad</th>
-                </tr>
-              </thead>
-              <tbody>
-                {ThreeQuadArray.map((item, index) => (
-                  <tr key={index}>
-                    <td style={{ border: '1px solid black', padding: '8px' }}>{item.Combination}</td>
-                    <td style={{ border: '1px solid black', padding: '8px' }}>{item.Style}</td>
-                    <td style={{ border: '1px solid black', padding: '8px' }}>{item.Missing}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </td>
-          <td>
-            <table style={{ border: '1px solid black', width: '250px', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr>
-                  <th style={{ border: '1px solid black', padding: '8px' }}>Style</th>
-                </tr>
-              </thead>
-              <tbody>
-                {ThreeStyleArray.map((item, index) => (
-                  <tr key={index}>
-                    <td style={{ border: '1px solid black', padding: '8px' }}>{item.Combination}</td>
-                    <td style={{ border: '1px solid black', padding: '8px' }}>{item.Style}</td>
-                    <td style={{ border: '1px solid black', padding: '8px' }}>{item.Missing}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </td>
-        </tr>
-        <tr>
-          <td>
-              <table style={{ border: '1px solid black', width: '250px', borderCollapse: 'collapse' }}>
-                <thead>
-                  <tr>
-                    <th style={{ border: '1px solid black', padding: '8px' }}>Bin</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {ThreeBINArray.map((item, index) => (
-                    <tr key={index}>
-                      <td style={{ border: '1px solid black', padding: '8px' }}>{item.Combination}</td>
-                      <td style={{ border: '1px solid black', padding: '8px' }}>{item.Style}</td>
-                      <td style={{ border: '1px solid black', padding: '8px' }}>{item.Missing}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </td>
-            <td>
-              <table style={{ border: '1px solid black', width: '250px', borderCollapse: 'collapse' }}>
+            <table style={{ border: '1px solid black', width: '250px', borderCollapse: 'collapse', marginBottom:'5px' }}>
                 <thead>
                   <tr>
                     <th style={{ border: '1px solid black', padding: '8px' }}>Com</th>
@@ -950,57 +908,73 @@ const TopThreeCheck: React.FC<TopThreeCheckProps> = ({ data }) => {
                   ))}
                 </tbody>
               </table>
-            </td>
-          {/*<td>
-          <table style={{ border: '1px solid black', width: '250px', borderCollapse: 'collapse' }}>
+            <table style={{ border: '1px solid black', width: '250px', borderCollapse: 'collapse', marginBottom:'5px' }}>
+                <thead>
+                  <tr>
+                    <th style={{ border: '1px solid black', padding: '8px' }}>Bin</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {ThreeBINArray.map((item, index) => (
+                    <tr key={index}>
+                      <td style={{ border: '1px solid black', padding: '8px' }}>{item.Combination}</td>
+                      <td style={{ border: '1px solid black', padding: '8px' }}>{item.Style}</td>
+                      <td style={{ border: '1px solid black', padding: '8px' }}>{item.Missing}</td>
+                    </tr>
+                  ))}
+                </tbody>
+            </table>
+          </td>
+          <td>
+            <table style={{ border: '1px solid black', width: '250px', borderCollapse: 'collapse', marginBottom:'5px' }}>
+                <thead>
+                  <tr>
+                    <th style={{ border: '1px solid black', padding: '8px' }}>Must</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {ThreeCheckArray.map((item, index) => (
+                    <tr key={index}>
+                      <td style={{ border: '1px solid black', padding: '8px' }}>{item.Missing}</td>
+                      <td style={{ border: '1px solid black', padding: '8px' }}>{item.Style}</td>
+                      <td style={{ border: '1px solid black', padding: '8px' }}>{item.Combination}</td>
+                    </tr>
+                  ))}
+                </tbody>
+            </table>
+            <table style={{ border: '1px solid black', width: '250px', borderCollapse: 'collapse', marginBottom:'5px' }}>
               <thead>
                 <tr>
-                  <th style={{ border: '1px solid black', padding: '8px' }}>Five</th>
+                  <th style={{ border: '1px solid black', padding: '8px' }}>Quad</th>
                 </tr>
               </thead>
               <tbody>
-                {FiveCheckArray.map((item, index) => (
+                {ThreeQuadArray.map((item, index) => (
                   <tr key={index}>
-                    <td style={{ border: '1px solid black', padding: '8px' }}>{item.Combination}</td>
-                    <td style={{ border: '1px solid black', padding: '8px' }}>{item.Style}</td>
                     <td style={{ border: '1px solid black', padding: '8px' }}>{item.Missing}</td>
+                    <td style={{ border: '1px solid black', padding: '8px' }}>{item.Style}</td>
+                    <td style={{ border: '1px solid black', padding: '8px' }}>{item.Combination}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
-            <table style={{ border: '1px solid black', width: '250px', borderCollapse: 'collapse' }}>
+            <table style={{ border: '1px solid black', width: '250px', borderCollapse: 'collapse', marginBottom:'5px' }}>
               <thead>
                 <tr>
                   <th style={{ border: '1px solid black', padding: '8px' }}>Style</th>
                 </tr>
               </thead>
               <tbody>
-                {FiveStyleArray.map((item, index) => (
+                {ThreeStyleArray.map((item, index) => (
                   <tr key={index}>
-                    <td style={{ border: '1px solid black', padding: '8px' }}>{item.Combination}</td>
-                    <td style={{ border: '1px solid black', padding: '8px' }}>{item.Style}</td>
                     <td style={{ border: '1px solid black', padding: '8px' }}>{item.Missing}</td>
+                    <td style={{ border: '1px solid black', padding: '8px' }}>{item.Style}</td>
+                    <td style={{ border: '1px solid black', padding: '8px' }}>{item.Combination}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </td>
-          <td>
-          <table style={{ border: '1px solid black', width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr>
-                  <th style={{ border: '1px solid black', padding: '8px' }}>Seven</th>
-                </tr>
-              </thead>
-              <tbody>
-                {SevenCheckArray.map((item, index) => (
-                  <tr key={index}>
-                    <td style={{ border: '1px solid black', padding: '8px' }}>{item}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </td>*/}
         </tr>
       </table>
     </div>

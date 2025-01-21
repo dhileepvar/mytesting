@@ -115,13 +115,11 @@ const App = () => {
                         <td style={{width:'250px'}}>
                           <TopThreeCheck data={data} />
                         </td>
+                        <td>
+                          <div style={{flexWrap: 'wrap' }}> {Opposites.map((opposite, index) => ( <div key={index} style={{ padding: '5px', border: '1px solid #ccc', margin: '5px' }}> {opposite} </div> ))} </div>
+                        </td>
                         <td style={{verticalAlign: 'top', border: '1px solid black', borderCollapse: 'collapse' }}>
                           <MissingTab data={data} />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div style={{ display: 'flex', flexWrap: 'wrap' }}> {Opposites.map((opposite, index) => ( <div key={index} style={{ padding: '5px', border: '1px solid #ccc', margin: '5px' }}> {opposite} </div> ))} </div>
                         </td>
                       </tr>
                     </table>
