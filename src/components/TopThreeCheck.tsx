@@ -992,11 +992,19 @@ const TopThreeCheck: React.FC<TopThreeCheckProps> = ({ data }) => {
         Combination: 'BIN', Missing: binArray.join('--'),
         Style: ''
       });
-      set3CheckArray(temp3array);
-      set3BINArray(temp3BINarray);
-      set3StyleArray(temp3Stylearray);
-      set3QuadArray(temp3Quadarray);
-      set3ComArray(temp3Comarray);
+
+      const customSort = (a: finalResult, b: finalResult) => {
+        const isAlpha = (char: string) => /^[A-Za-z]+$/.test(char);
+        
+        if (isAlpha(a.Style[0]) && !isAlpha(b.Style[0])) return -1;
+        if (!isAlpha(a.Style[0]) && isAlpha(b.Style[0])) return 1;
+        return a.Style.localeCompare(b.Style);
+      }
+      set3CheckArray(temp3array.sort(customSort));
+      set3BINArray(temp3BINarray.sort(customSort));
+      set3StyleArray(temp3Stylearray.sort(customSort));
+      set3QuadArray(temp3Quadarray.sort(customSort));
+      set3ComArray(temp3Comarray.sort(customSort));
       setAltCheckArray(tempaltarray);      
   }, [data]);
 
