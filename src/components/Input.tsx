@@ -64,10 +64,6 @@ const InputFields: React.FC<InputFieldsProps> = ({ onAdd, onSubmit, onEdit, data
                 {isSubmitDisabled ? 'Enable Submit' : 'Disable Submit'}
               </button>
               <button onClick={handleEdit} disabled={isSubmitDisabled}>Edit</button>
-              <label>
-                <input type="checkbox" disabled={isSubmitDisabled} checked={isChecked} onChange={handleCheckboxChange} />
-                Is Reverse!
-              </label>
             </div>
           </td>
           <td>
